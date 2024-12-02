@@ -1,0 +1,54 @@
+from collections import deque
+
+def tkBFS(graph, start, goal):
+    visited = set()                     # Tập các nút đã thăm
+    queue = deque([start])              # Hàng đợi để lưu các nút cần duyệt
+    result = []                         # Danh sách kết quả (thứ tự duyệt)
+
+    while queue:
+        node = queue.popleft()          # Lấy nút đầu tiên trong hàng đợi
+        if node not in visited:         # Nếu nút chưa được thăm
+            visited.add(node)           # Đánh dấu nút đã thăm
+            result.append(node)         # Thêm nút vào kết quả
+
+            # Kiểm tra nếu đã đến điểm đích
+            if node == goal:
+                return result
+
+            # Thêm các nút kề chưa thăm vào hàng đợi
+            queue.extend(neighbor for neighbor in graph[node] if neighbor not in visited)
+    
+    return None  # Không tìm thấy đường đến đích
+
+# Đồ thị mẫu
+graph = {
+   'A': ('B', 'C', 'D'),
+    'B': ('A', 'M', 'N'),
+    'M': ('X', 'Y'),
+    'X': ('M'),
+    'Y': ('M', 'R', 'S'),
+    'R': ('Y'),
+    'S': ('Y'),
+    'N': ('U', 'V'),
+    'U': ('N'),
+    'V': ('N', 'G', 'H'),
+    'G': ('V'),
+    'H': ('V'),
+    'C': ('A', 'L'),
+    'L': ('C'),
+    'D': ('A', 'O','P'),
+    'O': ('D','I','J'),
+    'I':('O'),
+    'J':('O'),
+    'P':('D')
+}
+
+# Chạy thuật toán BFS từ 'B' đến 'F'
+start = 'A'
+goal = 'P'
+path = tkBFS(graph, start, goal)
+
+if path:
+    print("Đường đi tìm được là:", path)
+else:
+    print(f"Không tìm thấy đường từ {start} đến {goal}.")
