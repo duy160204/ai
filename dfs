@@ -1,0 +1,48 @@
+def dfs(graph, start, goal, visited=None):
+    if visited is None:
+        visited = set()
+    visited.add(start)
+    result = [start]
+
+    # Kiểm tra nếu nút hiện tại là đích
+    if start == goal:
+        return result
+
+    for neighbor in graph[start]:
+        if neighbor not in visited:
+            path = dfs(graph, neighbor, goal, visited)
+            if path:  # Nếu tìm thấy đường đi hợp lệ
+                result.extend(path)
+                return result
+
+    return None  # Không tìm thấy đường đi trong nhánh này
+
+# Đồ thị mẫu
+graph = {
+    'A': ('B', 'C', 'D'),
+    'B': ('A', 'M', 'N'),
+    'M': ('X', 'Y'),
+    'X': ('M'),
+    'Y': ('M', 'R', 'S'),
+    'R': ('Y'),
+    'S': ('Y'),
+    'N': ('U', 'V'),
+    'U': ('N'),
+    'V': ('N', 'G', 'H'),
+    'G': ('V'),
+    'H': ('V'),
+    'C': ('A', 'L'),
+    'L': ('C'),
+    'D': ('A', 'O'),
+    'O': ('D')
+}
+
+# Gọi hàm tìm đường
+start = 'A'
+goal = 'H'  # Sửa chính tả từ goat -> goal
+path = dfs(graph, start, goal)
+
+if path:
+    print("Đường đi tìm được là:", path)
+else:
+    print("Không tìm thấy đường đi.")
